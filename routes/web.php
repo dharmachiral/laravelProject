@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\BlogController;
 
 //frontend Routes
 use App\Http\Controllers\frontend\HomeController;
@@ -31,3 +32,4 @@ Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Auth::routes();
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('students', StudentController::class);
+Route::resource('blogs', BlogController::class);

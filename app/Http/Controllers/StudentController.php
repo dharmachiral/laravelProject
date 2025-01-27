@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\student;
 use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
@@ -38,10 +38,20 @@ class StudentController extends Controller
             "province" => "required",
             "birthdate" => "required|date",
             "email" => "required|email",
+            "profile" => "nullable|image|mimes:jpeg,png,jpg,gif", // Validation for profile image |max:2048
         ],[
             'studentName.required' => 'Please Enter Name',
         ]);
 
+        $imageName = null;
+
+        // Handle the file upload if the profile image is provided
+        if ($request->hasFile('profile')) {
+            $imageName = uniqid() . '.' . $request->profile->extension(); // Generate a unique name
+            $request->profile->move(public_path('images/students'), $imageName); // Save to the directory
+        }
+
+        // Create the student record
         Student::create([
             'studentName' => $request->studentName,
             'address' => $request->address,
@@ -51,10 +61,12 @@ class StudentController extends Controller
             'province' => $request->province,
             'birthdate' => $request->birthdate,
             'email' => $request->email,
+            'profile' => $imageName, // Save the generated image name
         ]);
+
         return redirect()->back()->with('success', 'Student added successfully!');
-        // return response()->json(['message' => 'Student record created successfully.'], 201);
     }
+
 
 
     /**
@@ -78,9 +90,39 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
 {
+    $request->validate([
+        "studentName" => "required",
+        "address" => "required",
+        "phone" => "required|numeric",
+        "gender" => "required",
+        "country" => "required",
+        "province" => "required",
+        "birthdate" => "required|date",
+        "email" => "required|email",
+        // "profile" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
+    ]);
+
     $student = Student::findOrFail($id);
-    $student->update($request->all());
-    return redirect()->route('students.index')->with('success', 'Student updated successfully.');
+    if ($request->hasFile('profile')) {
+        $imageName = uniqid() . '.' . $request->profile->extension();
+        $request->profile->move(public_path('images/students'), $imageName);
+    }
+    else{
+        $imageName = $student->profile;
+    }
+    // Update other fields
+    $student->update([
+        'studentName' => $request->studentName,
+        'address' => $request->address,
+        'phone' => $request->phone,
+        'gender' => $request->gender,
+        'country' => $request->country,
+        'province' => $request->province,
+        'birthdate' => $request->birthdate,
+        'email' => $request->email,
+        'profile' =>$imageName,
+    ]);
+    return redirect()->route('students.index')->with('success', 'Student updated successfully!');
 }
     /**
      * Remove the specified resource from storage.

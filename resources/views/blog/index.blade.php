@@ -8,15 +8,15 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col">
-                                <h2>list of Students</h2>
+                                <h2>list of Blogs</h2>
 
                             </div>
                             <div class="col">
-                                <h3><a href="{{ route('students.create') }}" class="btn btn-success float-end">Create</a></h3>
+                                <h3><a href="{{ route('blogs.create') }}" class="btn btn-success float-end">Create</a></h3>
                             </div>
                         </div>
                     </div>
-                    {{-- success msg print --}}
+                    {{-- succcess msg print --}}
                     @if (session()->has('success'))
                         <div class="alert alert-success">
                             {{ session()->get('success') }}
@@ -32,43 +32,30 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Student Name</th>
-                                    <th>Address</th>
-                                    <th>Phone</th>
-                                    <th>Gender</th>
-                                    <th>country</th>
-                                    <th>province</th>
-                                    <th>birthdate</th>
-                                    <th>Email</th>
+                                    <th>Blog Name</th>
+                                    <th>Content</th>
                                     <th>Images</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($students as $id => $std)
+                                @foreach ($blog as $id => $blg)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $std->studentName }}</td>
-                                        <td>{{ $std->address }}</td>
-                                        <td>{{ $std->phone }}</td>
-                                        <td>{{ $std->gender }}</td>
-                                        <td>{{ $std->country }}</td>
-                                        <td>{{ $std->province }}</td>
-                                        <td>{{ $std->birthdate }}</td>
-                                        <td>{{ $std->email }}</td>
-
+                                        <td>{{ $blg->blogName }}</td>
+                                        <td>{{ $blg->content }}</td>
                                         <td>
-                                            <img src="{{ asset('images/students/' . $std->profile) }}" width="50" alt="No image">
+                                            <img src="{{ asset('images/blogs/' . $blg->image) }}" width="50" alt="No image">
                                         </td>
 
                                         <td>
                                             <!-- Edit Button -->
-                                            <a class="btn btn-success " href="{{ route('students.edit', $std->id) }}">
+                                            <a class="btn btn-success " href="{{ route('blogs.edit', $blg->id) }}">
                                                 <i class="bi bi-pencil-square"></i> Edit
                                             </a>
 
                                             <!-- Delete Button -->
-                                            <form action="{{ route('students.destroy', $std->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this student?');">
+                                            <form action="{{ route('blogs.destroy', $blg->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this student?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">
@@ -77,7 +64,7 @@
                                             </form>
 
                                             <!-- Show Button -->
-                                            <a class="btn btn-info" href="{{ route('students.show', $std->id) }}">
+                                            <a class="btn btn-info" href="{{ route('blogs.show', $blg->id) }}">
                                                 <i class="bi bi-eye"></i> Show
                                             </a>
                                         </td>

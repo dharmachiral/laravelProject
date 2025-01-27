@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title','Show student')
 @section('content')
     <div class="container py-4">
         <div class="row justify-content-center">
@@ -33,6 +33,9 @@
                         </div>
                         <div class="mb-2">
                             <strong>Email:</strong> <span>{{ $student->email ?? '<span class="border px-2">Not Available</span>' }}</span>
+                        </div>
+                        <div class="mb-2">
+                        <strong>Profile:</strong>  <img src="{{ asset('images/students/' . $student->profile) }}" width="50" alt="No image">
                         </div>
                     </div>
                 </div>

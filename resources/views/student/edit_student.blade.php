@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title','Edit students')
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -19,7 +19,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('students.update', $student->id) }}" method="post">
+                        <form action="{{ route('students.update', $student->id) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="row">
@@ -58,10 +58,10 @@
                                     <div class="form-group">
                                         <label for="gender" class="form-label">Gender</label>
                                         <select class="form-select" id="gender" name="gender">
-                                            <option value="{{ $student->gender }}">{{ $student->gender }}</option>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                            <option value="other">Other</option>
+                                            <option value="" select disabled>Select Gender</option>
+                                            <option value="male"  @if($student['gender']=='male') selected @endif >Male</option>
+                                            <option value="other"  @if($student['gender']=='female') selected @endif >Other</option>
+                                            <option value="female"  @if($student['gender']=='other') selected @endif >Female</option>
                                         </select>
                                     </div>
                                     @error('gender')
@@ -84,14 +84,14 @@
                                     <div class="form-group">
                                         <label for="province" class="form-label">Province</label>
                                         <select class="form-select" id="province"  value name="province">
-                                            <option value="{{ $student->province}}">{{ $student->province}}</option>
-                                            <option value="1">koshi</option>
-                                            <option value="2">Madhesh</option>
-                                            <option value="3">Bagmati Province</option>
-                                            <option value="4">Gandaki Province</option>
-                                            <option value="5">Lumbini Province</option>
-                                            <option value="6">Karnali Province</option>
-                                            <option value="7">Sudurpashchim Province</option>
+                                            <option value="" select disabled>select province</option>
+                                            <option value="1" @if($student['province']=='1') selected @endif>koshi</option>
+                                            <option value="3"@if($student['province']=='2') selected @endif>Bagmati Province</option>
+                                            <option value="4"@if($student['province']=='3') selected @endif>Gandaki Province</option>
+                                            <option value="2"@if($student['province']=='4') selected @endif>Madhesh</option>
+                                            <option value="5"@if($student['province']=='5') selected @endif>Lumbini Province</option>
+                                            <option value="6"@if($student['province']=='6') selected @endif>Karnali Province</option>
+                                            <option value="7"@if($student['province']=='7') selected @endif>Sudurpashchim Province</option>
                                         </select>
                                     </div>
                                     @error('province')
@@ -118,6 +118,17 @@
                                         value="{{ $student->email}}"   placeholder="Enter Email">
                                     </div>
                                     @error('email')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="profile" class="form-label">Image</label>
+                                        <input type="file" class="form-control" id="profile" name="profile">
+                                        <img src="{{ asset('images/students/' . $student->profile) }}" width="100" alt="No image">
+                                    </div>
+                                    @error('profile')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
