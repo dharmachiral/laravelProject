@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\error;
 class StudentController extends Controller
 {
     /**
@@ -72,9 +72,16 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(student $student)
+    public function show($id)
     {
-        return view("student.show_student",compact('student'));
+
+        try{
+            $student = Student::findOrfail($id);
+            return view("student.show_student",compact('student'));
+        }catch(\Exception $e){
+            abort(401);
+        }
+
     }
 
     /**
